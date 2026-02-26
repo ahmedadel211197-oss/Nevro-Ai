@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nevro AI — سياسة الخصوصية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07091a;--bg2:#0c1124;--surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);--bh:rgba(99,179,237,0.3);
+  --cyan:#63b3ed;--cgl:rgba(99,179,237,0.12);--purple:#9f7aea;--pink:#f687b3;
+  --text:#eef2ff;--text2:rgba(238,242,255,0.58);--text3:rgba(238,242,255,0.32);
+  --nav-h:64px;
+}
+[data-theme="light"]{
+  --bg:#f6f8fc;--bg2:#edf1f9;--surface:rgba(0,0,0,0.03);
+  --border:rgba(0,0,0,0.08);--bh:rgba(37,99,235,0.25);
+  --cyan:#2563eb;--cgl:rgba(37,99,235,0.08);--purple:#6d28d9;
+  --text:#111827;--text2:rgba(17,24,39,0.62);--text3:rgba(17,24,39,0.36);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:100;background:rgba(7,9,26,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+[data-theme="light"] nav{background:rgba(246,248,252,.9);}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-logo{width:32px;height:32px;border-radius:9px;overflow:hidden;box-shadow:0 0 12px var(--cgl);}
+.brand-logo img{width:100%;height:100%;object-fit:cover;}
+.brand-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;background:linear-gradient(100deg,var(--cyan) 30%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-r{display:flex;align-items:center;gap:10px;}
+.btn-theme{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.btn-theme:hover{border-color:var(--cyan);color:var(--cyan);}
+.btn-back{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-back:hover{border-color:var(--bh);color:var(--text);}
+
+/* LAYOUT */
+.page-wrap{max-width:800px;margin:0 auto;padding:calc(var(--nav-h)+60px) 24px 80px;}
+
+/* HERO */
+.doc-hero{text-align:center;margin-bottom:56px;}
+.doc-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:999px;border:1px solid var(--bh);background:var(--cgl);font-size:12px;color:var(--cyan);margin-bottom:20px;}
+.doc-badge svg{width:13px;height:13px;}
+.doc-title{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px;}
+.doc-sub{font-size:15px;color:var(--text2);line-height:1.7;}
+.doc-meta{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text3);}
+.meta-item svg{width:14px;height:14px;color:var(--cyan);}
+
+/* TOC */
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:48px;}
+.toc-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:14px;}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.toc-list li a{font-size:14px;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.toc-list li a:hover{color:var(--cyan);}
+.toc-num{font-size:12px;color:var(--cyan);font-weight:700;width:20px;flex-shrink:0;}
+
+/* SECTIONS */
+.doc-section{margin-bottom:48px;padding-top:8px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.section-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.section-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.doc-text{font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:14px;}
+.doc-text:last-child{margin-bottom:0;}
+
+/* highlight box */
+.highlight-box{background:var(--cgl);border:1px solid var(--bh);border-radius:12px;padding:16px 20px;margin:16px 0;display:flex;gap:12px;}
+.highlight-box svg{width:18px;height:18px;color:var(--cyan);flex-shrink:0;margin-top:1px;}
+.highlight-box p{font-size:14px;color:var(--text2);line-height:1.7;}
+
+/* list */
+.doc-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+.doc-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text2);line-height:1.65;}
+.doc-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--cyan);flex-shrink:0;margin-top:8px;}
+
+/* divider */
+.doc-divider{border:none;border-top:1px solid var(--border);margin:48px 0;}
+
+/* contact box */
+.contact-box{background:linear-gradient(135deg,rgba(99,179,237,0.07),rgba(159,122,234,0.07));border:1px solid var(--bh);border-radius:16px;padding:28px;text-align:center;}
+.contact-box h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px;}
+.contact-box p{font-size:14px;color:var(--text2);margin-bottom:16px;}
+.contact-box a{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s;}
+.contact-box a:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--cgl);}
+
+/* footer */
+.doc-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.doc-footer p{font-size:12px;color:var(--text3);}
+.doc-footer-links{display:flex;gap:16px;}
+.doc-footer-links a{font-size:12px;color:var(--text3);text-decoration:none;cursor:pointer;transition:color .2s;}
+.doc-footer-links a:hover{color:var(--cyan);}
+
+@media(max-width:600px){nav{padding:0 20px;}.page-wrap{padding:calc(var(--nav-h)+40px) 16px 60px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html">
+    <div class="brand-logo"><img src="img/logo.png" alt="Nevro AI" onerror="this.parentElement.style.background='linear-gradient(135deg,#63b3ed,#9f7aea)'"></div>
+    <span class="brand-name">Nevro AI</span>
+  </a>
+  <div class="nav-r">
+    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+    </button>
+    <button class="btn-back" onclick="location.href='login.html'">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      رجوع
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- Hero -->
+  <div class="doc-hero">
+    <div class="doc-badge">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      وثيقة قانونية
+    </div>
+    <h1 class="doc-title">سياسة الخصوصية</h1>
+    <p class="doc-sub">نحن في Nevro AI نأخذ خصوصيتك على محمل الجد. تشرح هذه السياسة كيف نجمع بياناتك ونستخدمها ونحميها.</p>
+    <div class="doc-meta">
+      <div class="meta-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        آخر تحديث: يناير 2026
+      </div>
+      <div class="meta-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        وقت القراءة: 5 دقائق
+      </div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">المحتويات</div>
+    <ul class="toc-list">
+      <li><a href="#s1"><span class="toc-num">01</span> المعلومات التي نجمعها</a></li>
+      <li><a href="#s2"><span class="toc-num">02</span> كيف نستخدم معلوماتك</a></li>
+      <li><a href="#s3"><span class="toc-num">03</span> مشاركة البيانات</a></li>
+      <li><a href="#s4"><span class="toc-num">04</span> أمان البيانات</a></li>
+      <li><a href="#s5"><span class="toc-num">05</span> ملفات تعريف الارتباط</a></li>
+      <li><a href="#s6"><span class="toc-num">06</span> حقوقك</a></li>
+      <li><a href="#s7"><span class="toc-num">07</span> التواصل معنا</a></li>
+    </ul>
+  </div>
+
+  <!-- Section 1 -->
+  <div class="doc-section" id="s1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">المعلومات التي نجمعها</div>
+    </div>
+    <p class="doc-text">عند استخدامك لـ Nevro AI، قد نجمع الأنواع التالية من المعلومات:</p>
+    <ul class="doc-list">
+      <li><strong>معلومات الحساب:</strong> الاسم والبريد الإلكتروني وكلمة المرور المشفرة عند التسجيل.</li>
+      <li><strong>بيانات الاستخدام:</strong> المحادثات والاستفسارات التي ترسلها للمساعد الذكي.</li>
+      <li><strong>البيانات التقنية:</strong> عنوان IP ونوع المتصفح ونظام التشغيل وبيانات الجلسة.</li>
+      <li><strong>بيانات الدفع:</strong> في حالة الاشتراك المدفوع، يتم معالجتها بأمان عبر مزودي الدفع.</li>
+    </ul>
+    <div class="highlight-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/></svg>
+      <p>لا نجمع أي معلومات شخصية حساسة مثل بيانات الهوية الوطنية أو المعلومات الصحية.</p>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 2 -->
+  <div class="doc-section" id="s2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">كيف نستخدم معلوماتك</div>
+    </div>
+    <p class="doc-text">نستخدم المعلومات التي نجمعها للأغراض التالية:</p>
+    <ul class="doc-list">
+      <li>تقديم وتحسين خدمات Nevro AI وضمان جودة الاستجابات.</li>
+      <li>إدارة حسابك وإرسال الإشعارات المتعلقة بالخدمة.</li>
+      <li>معالجة المدفوعات وإدارة الاشتراكات.</li>
+      <li>تحليل أنماط الاستخدام لتحسين تجربة المستخدم.</li>
+      <li>الامتثال للمتطلبات القانونية والتنظيمية.</li>
+    </ul>
+    <p class="doc-text">لن نستخدم محادثاتك لتدريب نماذج الذكاء الاصطناعي دون الحصول على موافقتك الصريحة.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 3 -->
+  <div class="doc-section" id="s3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">مشاركة البيانات</div>
+    </div>
+    <p class="doc-text">خصوصيتك تهمنا. <strong>لا نبيع بياناتك الشخصية لأي طرف ثالث.</strong> قد نشارك بياناتك في الحالات التالية فقط:</p>
+    <ul class="doc-list">
+      <li><strong>مزودو الخدمة:</strong> شركاء تقنيون موثوقون يساعدوننا في تشغيل المنصة (مثل البنية التحتية والدفع).</li>
+      <li><strong>المتطلبات القانونية:</strong> إذا طُلب منا ذلك بموجب القانون أو أمر قضائي.</li>
+      <li><strong>حماية الحقوق:</strong> لحماية حقوق Nevro AI أو مستخدميها في حالات الاحتيال أو الإساءة.</li>
+    </ul>
+    <div class="highlight-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+      <p>جميع مزودي الخدمة ملزمون باتفاقيات صارمة لحماية بياناتك وعدم استخدامها لأغراض أخرى.</p>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 4 -->
+  <div class="doc-section" id="s4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">أمان البيانات</div>
+    </div>
+    <p class="doc-text">نتخذ تدابير أمنية شاملة لحماية بياناتك:</p>
+    <ul class="doc-list">
+      <li>تشفير البيانات أثناء النقل باستخدام بروتوكول HTTPS/TLS.</li>
+      <li>تشفير كلمات المرور باستخدام خوارزميات تجزئة قوية.</li>
+      <li>مراقبة مستمرة للأنظمة للكشف عن أي نشاط مشبوه.</li>
+      <li>قيود صارمة على الوصول الداخلي لبيانات المستخدمين.</li>
+      <li>نسخ احتياطية منتظمة وخطط استمرارية العمل.</li>
+    </ul>
+    <p class="doc-text">رغم اتخاذنا كل الاحتياطات الممكنة، لا يمكن ضمان الأمان المطلق على الإنترنت. نرجو إخطارنا فوراً في حالة اشتباهك بأي خرق أمني.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 5 -->
+  <div class="doc-section" id="s5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">ملفات تعريف الارتباط</div>
+    </div>
+    <p class="doc-text">نستخدم ملفات تعريف الارتباط (Cookies) لتحسين تجربتك:</p>
+    <ul class="doc-list">
+      <li><strong>ملفات ضرورية:</strong> للحفاظ على جلستك وتسجيل دخولك.</li>
+      <li><strong>ملفات تحليلية:</strong> لفهم كيفية استخدام المنصة وتحسينها.</li>
+      <li><strong>ملفات التفضيلات:</strong> لحفظ إعداداتك مثل السمة الداكنة أو الفاتحة.</li>
+    </ul>
+    <p class="doc-text">يمكنك التحكم في ملفات تعريف الارتباط من إعدادات متصفحك، لكن تعطيلها قد يؤثر على بعض وظائف المنصة.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 6 -->
+  <div class="doc-section" id="s6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">حقوقك</div>
+    </div>
+    <p class="doc-text">تتمتع بالحقوق التالية فيما يخص بياناتك الشخصية:</p>
+    <ul class="doc-list">
+      <li><strong>حق الوصول:</strong> طلب نسخة من بياناتك الشخصية المحفوظة لدينا.</li>
+      <li><strong>حق التصحيح:</strong> تصحيح أي بيانات غير دقيقة أو غير مكتملة.</li>
+      <li><strong>حق الحذف:</strong> طلب حذف حسابك وجميع بياناتك المرتبطة به.</li>
+      <li><strong>حق الاعتراض:</strong> الاعتراض على معالجة بياناتك لأغراض معينة.</li>
+      <li><strong>حق نقل البيانات:</strong> الحصول على بياناتك بصيغة قابلة للنقل.</li>
+    </ul>
+    <p class="doc-text">لممارسة أي من هذه الحقوق، يمكنك التواصل معنا عبر صفحة الاتصال أو من إعدادات حسابك مباشرة.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <!-- Section 7 -->
+  <div class="doc-section" id="s7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">التواصل معنا</div>
+    </div>
+    <p class="doc-text">إذا كان لديك أي استفسار حول سياسة الخصوصية أو طريقة تعاملنا مع بياناتك، لا تتردد في التواصل معنا.</p>
+    <div class="contact-box">
+      <h3>هل لديك سؤال؟</h3>
+      <p>فريقنا متاح للإجابة على جميع استفساراتك المتعلقة بالخصوصية.</p>
+      <a href="contact.html">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        تواصل معنا
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <p>© 2026 Nevro AI — جميع الحقوق محفوظة</p>
+    <div class="doc-footer-links">
+      <a href="terms.html">شروط الاستخدام</a>
+      <a href="index.html">الرئيسية</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const light = document.body.getAttribute('data-theme') !== 'light';
+  document.body.setAttribute('data-theme', light ? 'light' : '');
+  document.getElementById('themeBtn').innerHTML = light
+    ? `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>`;
+}
+</script>
+</body>
+</html>

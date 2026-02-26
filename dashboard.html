@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nevro AI — لوحة التحكم</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#07091a;--bg2:#0c1124;
+  --surface:rgba(255,255,255,0.04);--surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.07);--bh:rgba(99,179,237,0.30);
+  --cyan:#63b3ed;--cgl:rgba(99,179,237,0.13);
+  --purple:#9f7aea;--pgl:rgba(159,122,234,0.13);
+  --pink:#f687b3;--pkgl:rgba(246,135,179,0.12);
+  --ok:#68d391;
+  --text:#eef2ff;--text2:rgba(238,242,255,0.56);--text3:rgba(238,242,255,0.30);
+  --sidebar-w:240px;--topbar-h:60px;
+}
+[data-theme="light"]{
+  --bg:#f0f4fc;--bg2:#e8edf8;
+  --surface:rgba(0,0,0,0.03);--surface2:rgba(0,0,0,0.06);
+  --border:rgba(0,0,0,0.07);--bh:rgba(37,99,235,0.25);
+  --cyan:#2563eb;--cgl:rgba(37,99,235,0.09);
+  --purple:#6d28d9;--pgl:rgba(109,40,217,0.09);
+  --ok:#15803d;
+  --text:#0f172a;--text2:rgba(15,23,42,0.60);--text3:rgba(15,23,42,0.35);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);display:flex;transition:background .3s,color .3s;}
+
+/* loading */
+.page-loading{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+.page-loading .sp{width:34px;height:34px;border-radius:50%;border:3px solid var(--border);border-top-color:var(--cyan);animation:spin .8s linear infinite;}
+.page-loading p{font-size:14px;color:var(--text2);}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sidebar-w);height:100vh;background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;position:fixed;right:0;top:0;z-index:200;transition:transform .3s,background .3s;}
+.sidebar-head{padding:18px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;}
+.brand{display:flex;align-items:center;gap:9px;text-decoration:none;flex:1;min-width:0;}
+.brand-logo{width:30px;height:30px;border-radius:8px;overflow:hidden;box-shadow:0 0 10px var(--cgl);flex-shrink:0;}
+.brand-logo img{width:100%;height:100%;object-fit:cover;}
+.brand-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;background:linear-gradient(100deg,var(--cyan) 30%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;}
+
+.sidebar-nav{flex:1;padding:12px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.sidebar-nav::-webkit-scrollbar{width:3px;}
+.sidebar-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.nav-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);padding:10px 10px 4px;font-weight:700;}
+
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:14px;color:var(--text2);cursor:pointer;transition:all .2s;text-decoration:none;border:none;background:none;font-family:'Tajawal',sans-serif;width:100%;text-align:right;}
+.nav-item:hover{background:var(--surface);color:var(--text);}
+.nav-item.active{background:var(--cgl);color:var(--cyan);border:1px solid rgba(99,179,237,0.2);}
+.nav-item svg{width:16px;height:16px;flex-shrink:0;}
+.nav-chev{margin-right:auto;width:13px!important;height:13px!important;color:var(--text3);transition:transform .25s;flex-shrink:0;}
+.nav-item.open .nav-chev{transform:rotate(90deg);}
+
+/* collapsible chats */
+.chats-collapse{overflow:hidden;max-height:0;transition:max-height .35s cubic-bezier(.4,0,.2,1);}
+.chats-collapse.open{max-height:500px;}
+.chat-sub{display:flex;align-items:center;gap:8px;padding:7px 10px 7px 8px;margin:1px 6px;border-radius:8px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s;}
+.chat-sub:hover{background:var(--surface);color:var(--text);}
+.chat-sub svg{width:12px;height:12px;flex-shrink:0;color:var(--text3);}
+.chat-sub span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chats-placeholder{padding:8px 18px;font-size:12px;color:var(--text3);font-style:italic;}
+
+.new-chat-btn{margin:0 10px 10px;padding:11px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 16px var(--cgl);transition:all .25s;}
+.new-chat-btn:hover{transform:translateY(-1px);box-shadow:0 7px 22px var(--cgl);}
+.new-chat-btn svg{width:15px;height:15px;}
+
+.sidebar-user{padding:12px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;transition:background .2s;}
+.sidebar-user:hover{background:var(--surface);}
+.user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--purple));display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.user-info{flex:1;min-width:0;}
+.user-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-plan{font-size:11px;color:var(--text3);}
+
+/* ══ MAIN ══ */
+.main{margin-right:var(--sidebar-w);flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+
+.topbar{height:var(--topbar-h);display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0;}
+.topbar-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;}
+.topbar-r{display:flex;align-items:center;gap:10px;}
+.icon-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.icon-btn:hover{border-color:var(--bh);color:var(--cyan);}
+.icon-btn svg{width:16px;height:16px;}
+.mob-menu-btn{display:none;}
+
+.content{flex:1;overflow-y:auto;padding:28px;}
+.content::-webkit-scrollbar{width:4px;}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* ══ WELCOME ══ */
+.welcome-banner{background:linear-gradient(135deg,rgba(99,179,237,0.08),rgba(159,122,234,0.08));border:1px solid var(--bh);border-radius:20px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden;opacity:0;animation:fadeUp .5s .1s forwards;}
+.welcome-banner::before{content:'';position:absolute;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,var(--cgl) 0%,transparent 65%);top:-80px;left:-60px;pointer-events:none;}
+.wb-greeting{font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:4px;}
+.wb-title{font-family:'Syne',sans-serif;font-size:clamp(18px,2.5vw,24px);font-weight:800;margin-bottom:6px;}
+.wb-sub{font-size:14px;color:var(--text2);}
+.wb-btn{display:flex;align-items:center;gap:8px;padding:11px 22px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px var(--cgl);transition:all .25s;flex-shrink:0;}
+.wb-btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px var(--cgl);}
+.wb-btn svg{width:15px;height:15px;}
+
+/* ══ STATS ══ */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;transition:border-color .25s,transform .25s;opacity:0;animation:fadeUp .5s forwards;}
+.stat-card:nth-child(1){animation-delay:.15s}
+.stat-card:nth-child(2){animation-delay:.2s}
+.stat-card:nth-child(3){animation-delay:.25s}
+.stat-card:hover{border-color:var(--bh);transform:translateY(-2px);}
+.stat-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.stat-icon svg{width:17px;height:17px;}
+.stat-icon.c{background:var(--cgl);color:var(--cyan);}
+.stat-icon.p{background:var(--pgl);color:var(--purple);}
+.stat-icon.g{background:rgba(104,211,145,0.12);color:var(--ok);}
+.stat-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;line-height:1;}
+.stat-label{font-size:13px;color:var(--text2);}
+
+/* ══ 2-COL ══ */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+
+/* ══ CARD ══ */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;opacity:0;animation:fadeUp .5s forwards;}
+.card:nth-child(1){animation-delay:.3s}
+.card:nth-child(2){animation-delay:.35s}
+.card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;}
+.card-link{font-size:12px;color:var(--cyan);text-decoration:none;transition:opacity .2s;}
+.card-link:hover{opacity:.75;}
+.card-body{padding:16px 20px;}
+
+/* chats in card */
+.chat-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.chat-row:last-child{border-bottom:none;padding-bottom:0;}
+.chat-row:hover .chat-row-title{color:var(--cyan);}
+.chat-ic{width:34px;height:34px;border-radius:9px;background:var(--cgl);color:var(--cyan);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chat-ic svg{width:15px;height:15px;}
+.chat-row-info{flex:1;min-width:0;}
+.chat-row-title{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .2s;}
+.chat-row-prev{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.chat-row-time{font-size:11px;color:var(--text3);flex-shrink:0;}
+
+.empty-state{display:flex;flex-direction:column;align-items:center;gap:10px;padding:32px 16px;text-align:center;}
+.empty-state svg{width:38px;height:38px;color:var(--text3);}
+.empty-state p{font-size:14px;color:var(--text2);}
+.empty-state small{font-size:12px;color:var(--text3);}
+.empty-cta{margin-top:4px;padding:9px 20px;border-radius:10px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-size:13px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;box-shadow:0 4px 12px var(--cgl);}
+
+/* ══ USAGE ══ */
+.usage-row{margin-bottom:18px;}
+.usage-row:last-child{margin-bottom:0;}
+.usage-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;}
+.usage-name{font-size:13px;color:var(--text2);font-weight:600;}
+.usage-pct-label{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;}
+.usage-bar{height:7px;background:var(--border);border-radius:4px;overflow:hidden;}
+.usage-fill{height:100%;border-radius:4px;transition:width .9s cubic-bezier(.4,0,.2,1);}
+.fill-c{background:linear-gradient(90deg,var(--cyan),var(--purple));}
+.fill-g{background:linear-gradient(90deg,var(--ok),#38a169);}
+.usage-sub{font-size:11px;color:var(--text3);margin-top:5px;}
+
+.reset-info{display:flex;align-items:center;gap:8px;margin-top:18px;padding:11px 14px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);}
+.reset-info svg{width:15px;height:15px;color:var(--cyan);flex-shrink:0;}
+.reset-info p{font-size:12px;color:var(--text2);line-height:1.55;}
+.reset-info strong{color:var(--cyan);}
+
+/* plan */
+.plan-card{background:linear-gradient(135deg,rgba(99,179,237,0.07),rgba(159,122,234,0.07));border:1px solid var(--bh);border-radius:18px;padding:22px;opacity:0;animation:fadeUp .5s .4s forwards;margin-top:18px;}
+.plan-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.plan-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;}
+.plan-badge{padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;background:var(--cgl);color:var(--cyan);border:1px solid rgba(99,179,237,0.2);}
+.plan-desc{font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.65;}
+.upgrade-btn{width:100%;padding:12px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--purple));border:none;color:#fff;font-size:14px;font-weight:700;font-family:'Tajawal',sans-serif;cursor:pointer;box-shadow:0 4px 14px var(--cgl);transition:all .25s;}
+.upgrade-btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px var(--cgl);}
+
+/* overlay */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:190;backdrop-filter:blur(4px);}
+
+/* responsive */
+@media(max-width:1100px){.stats-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:850px){
+  .sidebar{transform:translateX(100%);}
+  .sidebar.open{transform:translateX(0);}
+  .sidebar-overlay.open{display:block;}
+  .main{margin-right:0;}
+  .mob-menu-btn{display:flex;}
+  .two-col{grid-template-columns:1fr;}
+  .content{padding:18px;}
+  .welcome-banner{flex-direction:column;align-items:flex-start;}
+}
+@media(max-width:500px){.stats-grid{grid-template-columns:repeat(2,1fr);}.stat-val{font-size:22px;}}
+</style>
+</head>
+<body>
+
+<div class="page-loading" id="pageLoading">
+  <div class="sp"></div>
+  <p>جاري التحميل...</p>
+</div>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <a class="brand" href="index.html">
+      <div class="brand-logo"><img src="img/logo.png" alt="" onerror="this.parentElement.style.background='linear-gradient(135deg,#63b3ed,#9f7aea)'"></div>
+      <span class="brand-name">Nevro AI</span>
+    </a>
+  </div>
+
+  <div class="sidebar-nav">
+    <button class="new-chat-btn" onclick="location.href='chat.html'">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+      محادثة جديدة
+    </button>
+
+    <div class="nav-label">الرئيسية</div>
+    <a class="nav-item active" href="dashboard.html">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      لوحة التحكم
+    </a>
+
+    <!-- Chats toggle -->
+    <button class="nav-item" id="chatsToggleBtn" onclick="toggleChats()">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      المحادثات
+      <svg class="nav-chev" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div class="chats-collapse" id="chatsCollapse">
+      <div class="chats-placeholder" id="chatsSidebarContent">جاري التحميل...</div>
+    </div>
+
+    <div class="nav-label">الحساب</div>
+    <a class="nav-item" href="settings.html">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      الإعدادات
+    </a>
+    <a class="nav-item" href="pricing.html">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+      الترقية لـ Pro
+    </a>
+  </div>
+
+  <div class="sidebar-user" onclick="location.href='settings.html'">
+    <div class="user-av" id="userAv">؟</div>
+    <div class="user-info">
+      <div class="user-name" id="userName">...</div>
+      <div class="user-plan">مجاني</div>
+    </div>
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="color:var(--text3);flex-shrink:0"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px">
+      <button class="icon-btn mob-menu-btn" onclick="openSidebar()">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="topbar-title">لوحة التحكم</div>
+    </div>
+    <div class="topbar-r">
+      <button class="icon-btn" onclick="toggleTheme()" id="themeBtn">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+      </button>
+      <button class="icon-btn" onclick="handleLogout()" title="تسجيل الخروج">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Welcome -->
+    <div class="welcome-banner">
+      <div>
+        <div class="wb-greeting">مرحباً بعودتك</div>
+        <div class="wb-title" id="wbName">أهلاً!</div>
+        <div class="wb-sub">جاهز تبدأ؟ ابدأ محادثة جديدة الآن.</div>
+      </div>
+      <button class="wb-btn" onclick="location.href='chat.html'">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        ابدأ محادثة
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon c">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        </div>
+        <div class="stat-val" id="statChats">—</div>
+        <div class="stat-label">إجمالي المحادثات</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon p">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="stat-val" id="statDays">—</div>
+        <div class="stat-label">يوم مع Nevro</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon g">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+        </div>
+        <div class="stat-val" id="statPlan" style="font-size:20px;padding-top:4px">مجاني</div>
+        <div class="stat-label">نوع الخطة</div>
+      </div>
+    </div>
+
+    <!-- Two col -->
+    <div class="two-col">
+
+      <!-- Chats card -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-title">آخر المحادثات</div>
+          <a class="card-link" href="chat.html">+ جديد</a>
+        </div>
+        <div class="card-body" id="recentChatsCard">
+          <div class="empty-state">
+            <div class="sp" style="width:22px;height:22px;border-width:2px"></div>
+            <p>جاري التحميل...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage + Plan -->
+      <div>
+        <div class="card">
+          <div class="card-head">
+            <div class="card-title">الاستخدام اليومي</div>
+          </div>
+          <div class="card-body">
+
+            <!-- Today's chats -->
+            <div class="usage-row">
+              <div class="usage-top">
+                <span class="usage-name">محادثات اليوم</span>
+                <span class="usage-pct-label" id="todayChatsLabel" style="color:var(--cyan)">0</span>
+              </div>
+              <div class="usage-bar"><div class="usage-fill fill-c" id="todayChatsBar" style="width:0%"></div></div>
+              <div class="usage-sub" id="todayChatsSub">0 محادثة اليوم</div>
+            </div>
+
+            <!-- Day progress -->
+            <div class="usage-row">
+              <div class="usage-top">
+                <span class="usage-name">اليوم المنقضي</span>
+                <span class="usage-pct-label" id="dayPctLabel" style="color:var(--ok)">0%</span>
+              </div>
+              <div class="usage-bar"><div class="usage-fill fill-g" id="dayBar" style="width:0%"></div></div>
+              <div class="usage-sub" id="daySub">جاري الحساب...</div>
+            </div>
+
+            <!-- Reset info -->
+            <div class="reset-info">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <p>يتجدد الحد اليومي في <strong>12:00 PM</strong> — <strong id="timeUntilReset">...</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan -->
+        <div class="plan-card">
+          <div class="plan-head">
+            <div class="plan-name">خطتك الحالية</div>
+            <span class="plan-badge">مجاني</span>
+          </div>
+          <div class="plan-desc">رسائل غير محدودة، أوضاع متقدمة، ورفع الملفات — كل هذا في خطة Pro.</div>
+          <button class="upgrade-btn" onclick="location.href='pricing.html'">الترقية إلى Pro</button>
+        </div>
+      </div>
+
+    </div><!-- /two-col -->
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+const SURL = 'https://nhykoxjgtilnqgnmehkm.supabase.co';
+const SKEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5oeWtveGpndGlsbnFnbm1laGttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE3MDIwMDMsImV4cCI6MjA4NzI3ODAwM30.DCV36AHiWKYIeB62ZjG-zdz_k7FtyaYVkyQXpE3SP-s';
+const sb = supabase.createClient(SURL, SKEY);
+
+/* ══ INIT ══ */
+(async () => {
+  const { data:{ session } } = await sb.auth.getSession();
+  if (!session) { location.href = 'login.html'; return; }
+
+  const user  = session.user;
+  const meta  = user.user_metadata || {};
+  const full  = meta.full_name || meta.name || user.email.split('@')[0];
+  const first = meta.first_name || full.split(' ')[0];
+
+  document.getElementById('wbName').textContent  = `أهلاً يا ${first}!`;
+  document.getElementById('userName').textContent = full;
+  document.getElementById('userAv').textContent   = full.slice(0,2).toUpperCase();
+
+  // Days since signup
+  const days = Math.max(1, Math.floor((Date.now() - new Date(user.created_at)) / 86400000));
+  animateNum('statDays', days, 700);
+
+  // Load chats
+  await loadChats(user.id);
+
+  // Usage
+  renderDayProgress();
+
+  document.getElementById('pageLoading').style.display = 'none';
+})();
+
+/* ══ LOAD CHATS FROM SUPABASE ══ */
+async function loadChats(userId) {
+  const { data, error } = await sb
+    .from('conversations')
+    .select('id, title, created_at, last_message')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  const sidebarEl = document.getElementById('chatsSidebarContent');
+  const cardEl    = document.getElementById('recentChatsCard');
+
+  if (error || !data || data.length === 0) {
+    // Sidebar
+    sidebarEl.outerHTML = `<div class="chats-placeholder">لا توجد محادثات بعد</div>`;
+    // Card
+    cardEl.innerHTML = `
+      <div class="empty-state">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.4"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+        <p>لا توجد محادثات بعد</p>
+        <small>ابدأ محادثتك الأولى الآن!</small>
+        <button class="empty-cta" onclick="location.href='chat.html'">ابدأ الآن</button>
+      </div>`;
+    animateNum('statChats', 0, 500);
+    renderTodayChats(0, 0);
+    return;
+  }
+
+  animateNum('statChats', data.length, 700);
+
+  // Count today's chats
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const todayChats = data.filter(c => new Date(c.created_at) >= todayStart).length;
+  renderTodayChats(todayChats, data.length);
+
+  // ── Sidebar items ──
+  const sbHtml = data.slice(0, 30).map(c => `
+    <div class="chat-sub" onclick="location.href='chat.html?id=${esc(c.id)}'">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      <span>${esc(c.title || 'محادثة')}</span>
+    </div>`).join('');
+  // replace placeholder
+  const placeholder = document.getElementById('chatsSidebarContent');
+  if (placeholder) placeholder.outerHTML = sbHtml;
+  else document.getElementById('chatsCollapse').innerHTML = sbHtml;
+
+  // ── Card items (last 5) ──
+  const cardHtml = data.slice(0,5).map(c => `
+    <div class="chat-row" onclick="location.href='chat.html?id=${esc(c.id)}'">
+      <div class="chat-ic">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </div>
+      <div class="chat-row-info">
+        <div class="chat-row-title">${esc(c.title || 'محادثة')}</div>
+        <div class="chat-row-prev">${esc(c.last_message || '...')}</div>
+      </div>
+      <div class="chat-row-time">${timeAgo(c.created_at)}</div>
+    </div>`).join('');
+  cardEl.innerHTML = cardHtml;
+}
+
+/* ══ CHATS TOGGLE ══ */
+function toggleChats() {
+  const btn = document.getElementById('chatsToggleBtn');
+  const col = document.getElementById('chatsCollapse');
+  const isOpen = col.classList.contains('open');
+  col.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+}
+
+/* ══ TODAY CHATS ══ */
+function renderTodayChats(todayCount, totalCount) {
+  // Bar relative to total (max bar at 10 chats/day for visual)
+  const maxForBar = Math.max(10, totalCount);
+  const pct = Math.round(todayCount / maxForBar * 100);
+  setTimeout(() => {
+    document.getElementById('todayChatsBar').style.width    = Math.min(pct, 100) + '%';
+    document.getElementById('todayChatsLabel').textContent  = todayCount;
+    document.getElementById('todayChatsSub').textContent    = `${todayCount} محادثة اليوم من أصل ${totalCount} إجمالي`;
+  }, 500);
+}
+
+function renderDayProgress() {
+  const now  = new Date();
+
+  // Next 12:00 PM
+  const nextNoon = new Date();
+  nextNoon.setHours(12, 0, 0, 0);
+  if (now >= nextNoon) nextNoon.setDate(nextNoon.getDate() + 1);
+
+  // Last 12:00 PM
+  const lastNoon = new Date(nextNoon);
+  lastNoon.setDate(lastNoon.getDate() - 1);
+
+  const totalWindow = nextNoon - lastNoon;        // 24h in ms
+  const elapsed     = now - lastNoon;
+  const pct         = Math.round(elapsed / totalWindow * 100);
+
+  // Time until reset
+  const msLeft = nextNoon - now;
+  const h = Math.floor(msLeft / 3600000);
+  const m = Math.floor((msLeft % 3600000) / 60000);
+  const resetStr = h > 0 ? `بعد ${h} ساعة و${m} دقيقة` : `بعد ${m} دقيقة`;
+
+  setTimeout(() => {
+    document.getElementById('dayBar').style.width     = pct + '%';
+    document.getElementById('dayPctLabel').textContent = pct + '%';
+    document.getElementById('daySub').textContent      = `مضى ${pct}% من الـ 24 ساعة`;
+    document.getElementById('timeUntilReset').textContent = resetStr;
+  }, 700);
+}
+
+/* ══ HELPERS ══ */
+function animateNum(id, to, dur) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const start = performance.now();
+  (function step(now) {
+    const p = Math.min((now - start) / dur, 1);
+    el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3)));
+    if (p < 1) requestAnimationFrame(step);
+  })(performance.now());
+}
+
+function timeAgo(iso) {
+  const diff = Date.now() - new Date(iso);
+  const m = Math.floor(diff / 60000);
+  const h = Math.floor(m / 60);
+  const d = Math.floor(h / 24);
+  if (d > 0) return `منذ ${d}ي`;
+  if (h > 0) return `منذ ${h}س`;
+  if (m > 0) return `منذ ${m}د`;
+  return 'الآن';
+}
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+async function handleLogout() {
+  await sb.auth.signOut();
+  location.href = 'login.html';
+}
+
+function openSidebar()  { document.getElementById('sidebar').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+function toggleTheme() {
+  const light = document.body.getAttribute('data-theme') !== 'light';
+  document.body.setAttribute('data-theme', light ? 'light' : '');
+  document.getElementById('themeBtn').innerHTML = light
+    ? `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>`;
+}
+</script>
+</body>
+</html>

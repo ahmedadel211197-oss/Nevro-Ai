@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nevro AI — شروط الاستخدام</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07091a;--bg2:#0c1124;--surface:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.08);--bh:rgba(159,122,234,0.3);
+  --cyan:#63b3ed;--cgl:rgba(99,179,237,0.12);--purple:#9f7aea;--pgl:rgba(159,122,234,0.12);
+  --text:#eef2ff;--text2:rgba(238,242,255,0.58);--text3:rgba(238,242,255,0.32);
+  --nav-h:64px;
+}
+[data-theme="light"]{
+  --bg:#f6f8fc;--bg2:#edf1f9;--surface:rgba(0,0,0,0.03);
+  --border:rgba(0,0,0,0.08);--bh:rgba(109,40,217,0.25);
+  --cyan:#2563eb;--cgl:rgba(37,99,235,0.08);--purple:#6d28d9;--pgl:rgba(109,40,217,0.08);
+  --text:#111827;--text2:rgba(17,24,39,0.62);--text3:rgba(17,24,39,0.36);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;transition:background .3s,color .3s;}
+
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;padding:0 48px;z-index:100;background:rgba(7,9,26,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+[data-theme="light"] nav{background:rgba(246,248,252,.9);}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-logo{width:32px;height:32px;border-radius:9px;overflow:hidden;box-shadow:0 0 12px var(--cgl);}
+.brand-logo img{width:100%;height:100%;object-fit:cover;}
+.brand-name{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;background:linear-gradient(100deg,var(--cyan) 30%,var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-r{display:flex;align-items:center;gap:10px;}
+.btn-theme{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.btn-theme:hover{border-color:var(--purple);color:var(--purple);}
+.btn-back{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text2);font-size:13px;font-family:'Tajawal',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-back:hover{border-color:var(--bh);color:var(--text);}
+
+.page-wrap{max-width:800px;margin:0 auto;padding:calc(var(--nav-h)+60px) 24px 80px;}
+
+.doc-hero{text-align:center;margin-bottom:56px;}
+.doc-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 14px;border-radius:999px;border:1px solid var(--bh);background:var(--pgl);font-size:12px;color:var(--purple);margin-bottom:20px;}
+.doc-badge svg{width:13px;height:13px;}
+.doc-title{font-family:'Syne',sans-serif;font-size:clamp(28px,5vw,46px);font-weight:800;letter-spacing:-.5px;margin-bottom:12px;}
+.doc-sub{font-size:15px;color:var(--text2);line-height:1.7;}
+.doc-meta{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap;}
+.meta-item{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text3);}
+.meta-item svg{width:14px;height:14px;color:var(--purple);}
+
+.toc{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin-bottom:48px;}
+.toc-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--text3);margin-bottom:14px;}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.toc-list li a{font-size:14px;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s;}
+.toc-list li a:hover{color:var(--purple);}
+.toc-num{font-size:12px;color:var(--purple);font-weight:700;width:20px;flex-shrink:0;}
+
+.doc-section{margin-bottom:48px;padding-top:8px;}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.section-num{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--purple),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.section-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;}
+.doc-text{font-size:15px;color:var(--text2);line-height:1.85;margin-bottom:14px;}
+.doc-text:last-child{margin-bottom:0;}
+
+.warn-box{background:rgba(246,135,179,0.08);border:1px solid rgba(246,135,179,0.25);border-radius:12px;padding:16px 20px;margin:16px 0;display:flex;gap:12px;}
+.warn-box svg{width:18px;height:18px;color:#f687b3;flex-shrink:0;margin-top:1px;}
+.warn-box p{font-size:14px;color:var(--text2);line-height:1.7;}
+
+.ok-box{background:var(--pgl);border:1px solid var(--bh);border-radius:12px;padding:16px 20px;margin:16px 0;display:flex;gap:12px;}
+.ok-box svg{width:18px;height:18px;color:var(--purple);flex-shrink:0;margin-top:1px;}
+.ok-box p{font-size:14px;color:var(--text2);line-height:1.7;}
+
+.doc-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin:14px 0;}
+.doc-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--text2);line-height:1.65;}
+.doc-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--purple);flex-shrink:0;margin-top:8px;}
+.doc-list.no-allowed li::before{background:#f687b3;}
+
+.doc-divider{border:none;border-top:1px solid var(--border);margin:48px 0;}
+
+.contact-box{background:linear-gradient(135deg,rgba(159,122,234,0.07),rgba(99,179,237,0.07));border:1px solid var(--bh);border-radius:16px;padding:28px;text-align:center;}
+.contact-box h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:8px;}
+.contact-box p{font-size:14px;color:var(--text2);margin-bottom:16px;}
+.contact-box a{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--cyan));color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .25s;}
+.contact-box a:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--pgl);}
+
+.doc-footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.doc-footer p{font-size:12px;color:var(--text3);}
+.doc-footer-links{display:flex;gap:16px;}
+.doc-footer-links a{font-size:12px;color:var(--text3);text-decoration:none;cursor:pointer;transition:color .2s;}
+.doc-footer-links a:hover{color:var(--purple);}
+
+@media(max-width:600px){nav{padding:0 20px;}.page-wrap{padding:calc(var(--nav-h)+40px) 16px 60px;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="brand" href="index.html">
+    <div class="brand-logo"><img src="img/logo.png" alt="Nevro AI" onerror="this.parentElement.style.background='linear-gradient(135deg,#63b3ed,#9f7aea)'"></div>
+    <span class="brand-name">Nevro AI</span>
+  </a>
+  <div class="nav-r">
+    <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>
+    </button>
+    <button class="btn-back" onclick="location.href='login.html'">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+      رجوع
+    </button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <div class="doc-hero">
+    <div class="doc-badge">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      وثيقة قانونية
+    </div>
+    <h1 class="doc-title">شروط الاستخدام</h1>
+    <p class="doc-sub">باستخدامك لـ Nevro AI فأنت توافق على هذه الشروط. يرجى قراءتها بعناية قبل البدء.</p>
+    <div class="doc-meta">
+      <div class="meta-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        آخر تحديث: يناير 2026
+      </div>
+      <div class="meta-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        وقت القراءة: 7 دقائق
+      </div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">المحتويات</div>
+    <ul class="toc-list">
+      <li><a href="#t1"><span class="toc-num">01</span> القبول والموافقة</a></li>
+      <li><a href="#t2"><span class="toc-num">02</span> وصف الخدمة</a></li>
+      <li><a href="#t3"><span class="toc-num">03</span> شروط الحساب</a></li>
+      <li><a href="#t4"><span class="toc-num">04</span> الاستخدام المقبول</a></li>
+      <li><a href="#t5"><span class="toc-num">05</span> الاستخدام المحظور</a></li>
+      <li><a href="#t6"><span class="toc-num">06</span> الملكية الفكرية</a></li>
+      <li><a href="#t7"><span class="toc-num">07</span> الاشتراكات والمدفوعات</a></li>
+      <li><a href="#t8"><span class="toc-num">08</span> إنهاء الخدمة</a></li>
+    </ul>
+  </div>
+
+  <div class="doc-section" id="t1">
+    <div class="section-header">
+      <div class="section-num">01</div>
+      <div class="section-title">القبول والموافقة</div>
+    </div>
+    <p class="doc-text">بالوصول إلى خدمات Nevro AI أو استخدامها، فإنك توافق على الالتزام بهذه الشروط وجميع القوانين واللوائح المعمول بها. إذا كنت لا توافق على أي من هذه الشروط، فيرجى عدم استخدام الخدمة.</p>
+    <div class="ok-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <p>نحتفظ بحق تعديل هذه الشروط في أي وقت. سنخطرك بأي تغييرات جوهرية عبر البريد الإلكتروني أو إشعار في المنصة.</p>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t2">
+    <div class="section-header">
+      <div class="section-num">02</div>
+      <div class="section-title">وصف الخدمة</div>
+    </div>
+    <p class="doc-text">Nevro AI هي منصة ذكاء اصطناعي تتيح للمستخدمين التفاعل مع مساعد ذكي قادر على:</p>
+    <ul class="doc-list">
+      <li>كتابة وشرح وتصحيح الأكواد البرمجية بأكثر من 20 لغة.</li>
+      <li>إنتاج محتوى نصي متنوع بالعربية والإنجليزية وأكثر من 50 لغة.</li>
+      <li>الإجابة على الأسئلة وحل المسائل الأكاديمية والعلمية.</li>
+      <li>توليد الأفكار وتحليل المعلومات وتقديم التوصيات.</li>
+    </ul>
+    <p class="doc-text">الخدمة مقدمة "كما هي" ونسعى دائماً لتحسينها، لكن لا نضمن دقة جميع الاستجابات أو ملاءمتها لجميع الأغراض.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t3">
+    <div class="section-header">
+      <div class="section-num">03</div>
+      <div class="section-title">شروط الحساب</div>
+    </div>
+    <p class="doc-text">للاستخدام الكامل للخدمة، يجب إنشاء حساب. بقبولك هذه الشروط فأنت تؤكد:</p>
+    <ul class="doc-list">
+      <li>أن عمرك لا يقل عن 13 عاماً (أو السن القانونية في بلدك).</li>
+      <li>أن المعلومات التي تقدمها دقيقة وحديثة.</li>
+      <li>أنت مسؤول عن الحفاظ على سرية كلمة مرورك.</li>
+      <li>أنت مسؤول عن جميع الأنشطة التي تتم من خلال حسابك.</li>
+    </ul>
+    <p class="doc-text">يُرجى إخطارنا فوراً إذا اشتبهت في وقوع وصول غير مصرح به لحسابك.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t4">
+    <div class="section-header">
+      <div class="section-num">04</div>
+      <div class="section-title">الاستخدام المقبول</div>
+    </div>
+    <p class="doc-text">يمكنك استخدام Nevro AI للأغراض التالية:</p>
+    <ul class="doc-list">
+      <li>الاستخدام الشخصي والمهني والأكاديمي المشروع.</li>
+      <li>تطوير المشاريع والتطبيقات البرمجية.</li>
+      <li>إنتاج المحتوى الإبداعي والتعليمي.</li>
+      <li>البحث والتحليل والدراسة.</li>
+      <li>الاستخدام التجاري وفق الخطة المشترك بها.</li>
+    </ul>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t5">
+    <div class="section-header">
+      <div class="section-num">05</div>
+      <div class="section-title">الاستخدام المحظور</div>
+    </div>
+    <p class="doc-text">يُحظر صراحةً استخدام Nevro AI في الأنشطة التالية:</p>
+    <ul class="doc-list no-allowed">
+      <li>إنتاج محتوى غير قانوني أو مسيء أو ينتهك حقوق الآخرين.</li>
+      <li>نشر معلومات كاذبة أو مضللة أو تشهيرية.</li>
+      <li>انتهاك خصوصية الآخرين أو جمع بياناتهم دون إذن.</li>
+      <li>أي نشاط يتعلق بالاحتيال أو الجرائم الإلكترونية.</li>
+      <li>إنتاج محتوى يروج للكراهية أو العنف أو التمييز.</li>
+      <li>محاولة اختراق أو تعطيل أنظمة المنصة.</li>
+      <li>إعادة بيع الخدمة أو الوصول إليها دون إذن رسمي.</li>
+    </ul>
+    <div class="warn-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+      <p>مخالفة هذه الشروط قد تؤدي إلى إيقاف حسابك فوراً دون سابق إنذار وقد تعرضك للمسؤولية القانونية.</p>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t6">
+    <div class="section-header">
+      <div class="section-num">06</div>
+      <div class="section-title">الملكية الفكرية</div>
+    </div>
+    <p class="doc-text">فيما يخص الملكية الفكرية على المنصة:</p>
+    <ul class="doc-list">
+      <li><strong>محتواك:</strong> المحتوى الذي تنتجه باستخدام Nevro AI هو ملكك، وتتحمل مسؤولية استخدامه.</li>
+      <li><strong>المنصة:</strong> جميع حقوق Nevro AI — بما فيها التصميم والكود والعلامة التجارية — محفوظة لنا.</li>
+      <li><strong>المحتوى المولّد:</strong> يمكنك استخدام المحتوى المولّد لأغراض شخصية وتجارية وفق شروط خطتك.</li>
+    </ul>
+    <p class="doc-text">لا يمنحك استخدام الخدمة أي حق في الملكية الفكرية الخاصة بـ Nevro AI أو مزودي التقنية الذين نعتمد عليهم.</p>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t7">
+    <div class="section-header">
+      <div class="section-num">07</div>
+      <div class="section-title">الاشتراكات والمدفوعات</div>
+    </div>
+    <p class="doc-text">بالنسبة للخطط المدفوعة:</p>
+    <ul class="doc-list">
+      <li>تُجدَّد الاشتراكات تلقائياً في نهاية كل دورة فوترة ما لم تقم بالإلغاء.</li>
+      <li>يمكنك إلغاء اشتراكك في أي وقت من إعدادات حسابك.</li>
+      <li>الإلغاء يوقف التجديد، لكن يمكنك الاستمرار في استخدام الخدمة حتى نهاية الفترة المدفوعة.</li>
+      <li>لا نقدم استردادًا للمبالغ في الظروف العادية، إلا في حالات الأعطال الجسيمة من جانبنا.</li>
+    </ul>
+    <div class="ok-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+      <p>جميع المدفوعات مشفرة وآمنة. لا نحتفظ ببيانات بطاقتك الائتمانية على خوادمنا.</p>
+    </div>
+  </div>
+
+  <hr class="doc-divider">
+
+  <div class="doc-section" id="t8">
+    <div class="section-header">
+      <div class="section-num">08</div>
+      <div class="section-title">إنهاء الخدمة</div>
+    </div>
+    <p class="doc-text">يمكنك إنهاء حسابك في أي وقت من إعدادات حسابك. كذلك نحتفظ بحق إيقاف أو إنهاء أي حساب في الحالات التالية:</p>
+    <ul class="doc-list">
+      <li>انتهاك شروط الاستخدام أو سياسة الخصوصية.</li>
+      <li>النشاط الاحتيالي أو غير القانوني.</li>
+      <li>عدم سداد الاشتراك المستحق بعد فترة السماح.</li>
+      <li>إساءة استخدام الخدمة بشكل متكرر.</li>
+    </ul>
+    <p class="doc-text">عند إنهاء الحساب، يمكنك طلب نسخة من بياناتك خلال 30 يوماً قبل حذفها نهائياً.</p>
+
+    <div class="contact-box" style="margin-top:32px">
+      <h3>هل لديك استفسار؟</h3>
+      <p>فريقنا القانوني متاح للإجابة على أي سؤال حول شروط الاستخدام.</p>
+      <a href="contact.html">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        تواصل معنا
+      </a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <p>© 2026 Nevro AI — جميع الحقوق محفوظة</p>
+    <div class="doc-footer-links">
+      <a href="privacy.html">سياسة الخصوصية</a>
+      <a href="index.html">الرئيسية</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleTheme() {
+  const light = document.body.getAttribute('data-theme') !== 'light';
+  document.body.setAttribute('data-theme', light ? 'light' : '');
+  document.getElementById('themeBtn').innerHTML = light
+    ? `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`
+    : `<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z"/></svg>`;
+}
+</script>
+</body>
+</html>
