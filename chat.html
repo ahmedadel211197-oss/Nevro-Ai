@@ -195,7 +195,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);dis
 .typing-dots span:nth-child(3){animation-delay:.4s;}
 
 /* ══ INPUT ══ */
-.input-area{padding:12px 14px 18px;flex-shrink:0;background:var(--bg);}
+.input-area{padding:12px 14px 18px;flex-shrink:0;background:transparent;}
 .input-inner{max-width:760px;margin:0 auto;}
 .input-wrap{position:relative;}
 #msgIn{flex:1;background:none;border:none;outline:none;color:var(--text);font-family:'Tajawal',sans-serif;font-size:14px;resize:none;max-height:160px;min-height:24px;line-height:1.6;direction:rtl;}
@@ -335,7 +335,7 @@ body{font-family:'Tajawal',sans-serif;background:var(--bg);color:var(--text);dis
 
 /* ══ MODEL DROPDOWN ══ */
 /* ══ Input Pill ══ */
-.input-pill{display:flex;align-items:center;gap:0;background:var(--surface);border:1.5px solid var(--border);border-radius:22px;padding:6px 6px 6px 10px;transition:border-color .25s,box-shadow .25s;min-height:52px;}
+.input-pill{display:flex;align-items:center;gap:0;background:var(--bg2);border:1.5px solid rgba(99,179,237,0.25);border-radius:22px;padding:6px 6px 6px 10px;transition:border-color .25s,box-shadow .25s;min-height:52px;box-shadow:0 2px 20px rgba(0,0,0,0.3);}
 .input-pill:focus-within{border-color:var(--bh);box-shadow:0 0 0 3px var(--cgl);}
 .pill-divider{width:1px;height:22px;background:var(--border);margin:0 8px;flex-shrink:0;}
 .input-pill textarea{flex:1;background:transparent;border:none;color:var(--text);font-family:inherit;font-size:15px;resize:none;outline:none;line-height:1.5;min-height:36px;max-height:160px;padding:6px 4px;align-self:center;}
